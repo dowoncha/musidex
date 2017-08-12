@@ -1,24 +1,57 @@
-import { StackNavigator, TabNavigator } from 'react-navigation'
-import { LoginScreen, ExploreScreen } from '../screens'
+import React from 'react'
+
+import { StackNavigator, TabNavigator, TabBarBottom } from 'react-navigation'
+import { LoginScreen, ExploreScreen, PlaylistScreen } from '../screens'
+
+import { Icon, /* Tabs, Tab*/ } from 'react-native-elements'
 
 // Manifest of possible screens
 const PrimaryNavigator = TabNavigator({
   Explore: { screen: ExploreScreen },
+  Playlist: { screen: PlaylistScreen }
 }, {
+  // Tab bar navigation icons
+  navigationOptions: ({ navigation }) => ({
+    tabBarIcon: ({ focused }) => {
+      const { routeName } = navigation.state;
+      let iconName;
+      switch (routeName) {
+        case 'Explore':
+          iconName = 'location'
+          break;
+        case 'Playlist':
+          iconName = 'play'
+          break;
+        case 'Upload':
+          iconName = 'plus'
+          break;
+        case 'Profile':
+          iconName = 'user'
+          break;
+      }
+
+      return (
+        <Icon
+          name={iconName}
+          type='evilicon'
+          color={focused ? '#2f95dc' : '#ccc'}
+        />
+      );
+    }
+  }),
+  tabBarComponent: TabBarBottom,
   tabBarPosition: 'bottom',
   swipeEnabled: false,
-  tabBarOptions: {
-    showIcon: true
-  }
+  animationEnabled: false
 })
 
 // TODO: Drop upload screen should go in a separate navigator
 const AppNavigator = StackNavigator({
+  Home: { screen: PrimaryNavigator },
   Login: {
     path: '/login',
     screen: LoginScreen
   },
-  Home: { screen: PrimaryNavigator },
   // Signup: { screen: SignupScreen },
   // DropUploadScreen: { screen: DropUploadScreen }
 }, {
