@@ -3,11 +3,13 @@ package com.musidex;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 
+// Firebase
 import io.invertase.firebase.RNFirebasePackage;
 // import io.invertase.firebase.admob.RNFirebaseAdMobPackage; //Firebase AdMob
 import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage; // Firebase Analytics
@@ -19,6 +21,8 @@ import io.invertase.firebase.database.RNFirebaseDatabasePackage; // Firebase Rea
 import io.invertase.firebase.perf.RNFirebasePerformancePackage; // Firebase Performance
 import io.invertase.firebase.storage.RNFirebaseStoragePackage; // Firebase Storage
 
+// Mapbox
+import com.mapbox.reactnativemapboxgl.ReactNativeMapboxGLPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -35,6 +39,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+          new VectorIconsPackage(),
           new RNFirebasePackage(),  // <-- Add this line
           // Add these packages as appropriate
           // new RNFirebaseAdMobPackage(),
@@ -45,7 +50,8 @@ public class MainApplication extends Application implements ReactApplication {
           new RNFirebaseDatabasePackage(),
           // new RNFirebaseMessagingPackage(),
           new RNFirebasePerformancePackage(),
-          new RNFirebaseStoragePackage()
+          new RNFirebaseStoragePackage(),
+          new ReactNativeMapboxGLPackage()
       );
     }
   };

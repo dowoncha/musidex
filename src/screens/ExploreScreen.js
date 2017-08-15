@@ -4,13 +4,18 @@ import { connect } from 'react-redux'
 
 import { NavigationActions } from 'react-navigation'
 
-// import ReactMapboxGl from 'react-mapbox-gl'
-// import { MAPBOX_ACCESS_KEY } from '../Config/PublicAccessKeys'
+import Mapbox, { MapView } from 'react-native-mapbox-gl'
+import { MAPBOX_ACCESS_TOKEN } from '../config/PublicAccessKeys'
+
+Mapbox.setAccessToken(MAPBOX_ACCESS_TOKEN)
 
 class ExploreScreen extends Component {
   static navigationOptions = {
     tabBarLabel: 'Explore',
   };
+
+  constructorDidMount() {
+  }
 
   constructor(props) {
     super(props);
@@ -28,22 +33,10 @@ class ExploreScreen extends Component {
   }
 
   render() {
-    const Map = ReactMapboxGl({
-      accessToken: MAPBOX_ACCESS_KEY
-    })
-
     return (
       <View>
         <Text h2>Explore Screen</Text>
-        {/*
-        <Map
-          style="mapbox://styles/mapbox/streets-v9"
-          containerStyle={{
-            height: "100vh",
-            width: "100vw"
-          }}>
-        </Map>
-        */}
+        <MapView />
       </View>
     );
   }

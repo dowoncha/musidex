@@ -1,4 +1,15 @@
 node_modules/
 .expo/
 npm-debug.*
+
+android/app/google-services.json
+
+*.apk
+*.class
+*.dex
+
+# Gradle files
 android/app/build
+android/.gradle
+android/build
+android/.idea

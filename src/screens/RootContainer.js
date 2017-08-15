@@ -6,6 +6,10 @@ import ReduxNavigation from '../navigation/ReduxNavigation'
 
 import { Button } from 'react-native-elements'
 
+// import ReactMapboxGl from 'react-native-mapbox-gl'
+
+// import { MAPBOX_ACCESS_KEY } from '../config/PublicAccessKeys'
+
 // import StartupActions from '../Redux/StartupRedux'
 // import ReduxPersist from '../Config/ReduxPersist'
 
@@ -19,6 +23,8 @@ class RootContainer extends Component {
     // if (!ReduxPersist.active) {
     //   this.props.startup()
     // }
+
+    // ReactMapboxGl.setAccessToken(MAPBOX_ACCESS_KEY)
   }
 
   render () {
