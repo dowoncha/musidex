@@ -28,9 +28,9 @@ class ExploreScreen extends Component {
   }
 
   render() {
-    // const Map = ReactMapboxGl({
-    //   acecssToken: MAPBOX_ACCESS_KEY
-    // })
+    const Map = ReactMapboxGl({
+      accessToken: MAPBOX_ACCESS_KEY
+    })
 
     return (
       <View>
