@@ -1,37 +1,29 @@
 import React, { Component } from 'react'
-import { View, ListView } from 'react-native'
+import { View, ScrollView, ListView, Text } from 'react-native'
 import { connect } from 'react-redux'
 
-// Styles
-// import styles from './Styles/PlaylistScreenStyle'
+// Components
+import { Header, List, ListItem } from 'react-native-elements'
+
+import dropsData from '../fixtures/drops_mock_data'
 
 class PlaylistScreen extends Component {
-  static navigationOptions = {
-    title: 'Playlist'
-  }
+  // static navigationOptions = {
+  //   title: 'Playlist'
+  // }
 
   state = {
-    dataSource: [
-      {
-        id: 1,
-        location: {
-          latitude: 37.78825,
-          longitude: -122.4324,
-        },
-        date: new Date(),
-        track: {
-          uri: 'spotify:track:3n3Ppam7vgaVa1iaRUc9Lp'
-        },
-        dropper: 5,
-        score: 10
-      }
-    ]
+    dataSource: dropsData
   }
 
   renderRow(rowData) {
     // TODO: move into component
     return (
-      <View></View>
+      <ListItem
+        key={rowData.id}
+        title={rowData.track}
+        subtitle={`Score: ${rowData.score}, dropped at ${rowData.date}`}
+        />
     );
   }
 
@@ -57,9 +49,21 @@ class PlaylistScreen extends Component {
     this.props.navigation.navigate('DropUploadScreen');
   }
 
+
   render () {
     return (
       <View>
+        <Header
+          statusBarProps={{ barStyle: 'light-content' }}
+          centerComponent={{ text: 'Playlist', style: { color: '#fff' }}}
+          rightComponent={{ icon: 'sort', color: '#fff' }} />
+        <ScrollView>
+          <List>
+            {this.state.dataSource.slice(0, 30)
+                .map((el, i) => this.renderRow(el))
+            }
+          </List>
+        </ScrollView>
       </View>
     )
   }

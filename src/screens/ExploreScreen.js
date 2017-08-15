@@ -21,12 +21,6 @@ class ExploreScreen extends Component {
     super(props);
 
     this.state = {
-      region: {
-        latitude: 37.78825,
-        longitude: 37.78825,
-        longitudeDelta: 0.0922,
-        latitudeDelta: 0.0421
-      },
       error: null,
       map: null
     };
@@ -34,9 +28,20 @@ class ExploreScreen extends Component {
 
   render() {
     return (
-      <View>
-        <Text h2>Explore Screen</Text>
-        <MapView />
+      <View style={{
+        flex: 1,
+        alignItems: 'stretch'
+      }}>
+        <MapView
+          initialCenterCoordinate={{
+            latitude: 40.72052634,
+            longitude: -73.97686958312988
+          }}
+          initialZoomLevel={11}
+          style={{
+            flex: 1
+          }}
+          styleURL={Mapbox.mapStyles.dark}/>
       </View>
     );
   }

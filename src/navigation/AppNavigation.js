@@ -1,14 +1,18 @@
 import React from 'react'
 
 import { StackNavigator, TabNavigator, TabBarBottom } from 'react-navigation'
-import { LoginScreen, ExploreScreen, PlaylistScreen } from '../screens'
+import {
+  LoginScreen, ExploreScreen,
+  PlaylistScreen, ProfileScreen, UploadScreen } from '../screens'
 
 import { Icon, /* Tabs, Tab*/ } from 'react-native-elements'
 
 // Manifest of possible screens
 const PrimaryNavigator = TabNavigator({
   Explore: { screen: ExploreScreen },
-  Playlist: { screen: PlaylistScreen }
+  Playlist: { screen: PlaylistScreen },
+  Upload: { screen: UploadScreen },
+  Profile: { screen: ProfileScreen }
 }, {
   // Tab bar navigation icons
   navigationOptions: ({ navigation }) => ({
