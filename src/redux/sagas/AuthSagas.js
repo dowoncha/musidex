@@ -1,16 +1,35 @@
-import { call, put, take, fork, cancel, cancelled } from 'redux-saga/effects';
+import { race, call, put, take, fork, cancel, cancelled } from 'redux-saga/effects';
 
 import { AsyncStorage } from 'react-native';
 
-import Creators, { AuthTypes } from '../Redux/AuthRedux';
+import AuthActionCreators, { AuthTypes } from '../AuthRedux';
 
-import firebase from '../firebase';
+import firebase from '../../firebase';
 
 function* setUser(user) {
   // yield call
 
   yield call(setAsyncStorageData, 'userData', user)
 }
+
+/**
+ * Firebase local login
+ * If successful, firebase's auth state should be changed
+ * On failure, calls login failure
+ */
+function * firebaseLocalLogin({email, password}) {
+  // Attempt to login user to firebase using email, password
+  try {
+    // Async call to firebase local authorization
+    yield call(
+      firebase.auth().signInWithEmailAndPassword,
+        email, password);
+
+  } catch(error) {
+    yield put(AuthActionCreators.loginFailure(error));
+  }
+}
+
 
 /**
  * Sign up user through Firebase
@@ -30,7 +49,7 @@ function * firebaseSignup(email, password) {
   }
 }
 
-function * firebaseSignout() {
+function * firebaseLogout() {
   try {
     yield call(firebase.auth().signOut)
 
@@ -45,7 +64,7 @@ function * firebaseAuthState() {
   try {
     const user = yield call(firebase.auth().onAuthStateChanged)
   } catch (error) {
-    yield put(UtilityTypes.toast(error))
+    // yield put(UtilityTypes.toast(error))
   }
 }
 
@@ -54,44 +73,47 @@ function * firebaseAuthState() {
 // Key is a string
 // Data will be stringified
 function * setAsyncStorageData(key, data) {
-  AsyncStorage.setItem(key, JSON.stringify(data);
+  yield call(AsyncStorage.setItem, key, JSON.stringify(data));
 }
 
-function * firebaseLocalLogin(email, password) {
-  // Attempt to login user to firebase using email, password
-  try {
-    // Async call to firebase local authorization
-    yield call(
-      firebase.auth().signInWithEmailAndPassword,
-        email, password);
-
-    // yield call(setAsyncStorageData,
-
-    yield put(AuthTypes.loginSuccess());
-    // yield call(AsyncStorage.addItem, JSON.stringify('userData'));
-  } catch(error) {
-    yield put(AuthTypes.loginFailure(error));
-  }
-}
-
-export function * authFlow() {
+export function * loginFlow() {
   while (true) {
     // On login request action
     const { email, password } = yield take(AuthTypes.LOGIN_REQUEST)
 
-    // Attempt to local login
-    const task = yield fork(firebaseLocalLogin, email, password)
+    // Account for possibility of a data race while logging in
+    let { auth, logout } = yield race({
+      auth: call(firebaseLocalLogin, {email, password}),
+      logout: take(AuthTypes.LOGOUT)
+    })
+
+    // If local login finishes without interruption
+    if (auth) {
+      console.warn("auth");
+      // If there was an error
+      yield put(AuthActionCreators.loginRequestSuccess())
+      // TODO: Need navigation actions
+      // Forward user to /home
+    }
 
     // we should redirect the user here
     // yield put(NavigationActions.navigate('Home'))
+  }
+}
 
-    // If logout or login failure occurs then
-    // Cancel the existing local login task
-    const action = yield take([AuthTypes.LOGOUT, AuthTypes.LOGIN_FAILURE])
-    if (Action.type === 'AuthTypes.LOGOUT') {
-      yield cancel(task)
-    }
+export function * signupFlow() {
+  while (true) {
+    let data = yield take(AuthTypes.SIGNUP)
+     
+    yield call(firebaseSignup, data.email, data.password)
+  }
+}
 
-    yield call(firebaseSignout);
+export function* logoutFlow() {
+  while (true) {
+    yield take(AuthTypes.LOGOUT)
+    yield call(firebaseLogout)
+
+    // Forward user to launch page
   }
 }

@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { Component } from 'react'
 
 import { StackNavigator, TabNavigator, TabBarBottom } from 'react-navigation'
 import {
-  LoginScreen, ExploreScreen,
+  LoginScreen, SignupScreen, ExploreScreen,
   PlaylistScreen, ProfileScreen, UploadScreen } from '../screens'
 
 import { Icon, /* Tabs, Tab*/ } from 'react-native-elements'
@@ -11,7 +11,9 @@ import { Icon, /* Tabs, Tab*/ } from 'react-native-elements'
 const PrimaryNavigator = TabNavigator({
   Explore: { screen: ExploreScreen },
   Playlist: { screen: PlaylistScreen },
-  Upload: { screen: UploadScreen },
+  Upload: { 
+    screen: UploadScreen
+  },
   Profile: { screen: ProfileScreen }
 }, {
   // Tab bar navigation icons
@@ -41,7 +43,7 @@ const PrimaryNavigator = TabNavigator({
           color={focused ? '#2f95dc' : '#ccc'}
         />
       );
-    }
+    },
   }),
   tabBarComponent: TabBarBottom,
   tabBarPosition: 'bottom',
@@ -51,20 +53,15 @@ const PrimaryNavigator = TabNavigator({
 
 // TODO: Drop upload screen should go in a separate navigator
 const AppNavigator = StackNavigator({
-  Login: {
-    path: '/login',
-    screen: LoginScreen
-  },
   Home: { screen: PrimaryNavigator },
-  // Signup: { screen: SignupScreen },
-  // DropUploadScreen: { screen: DropUploadScreen }
+  Login: { screen: LoginScreen },
+  Signup: { screen: SignupScreen } 
 }, {
-  headerMode: 'none',
   navigationOptions: {
     // initialRouteName: 'Launch'
     // TODO: prevent header from showing on home screen
     // TODO: set initial screen to launch screen
-    // header: null
+    headerMode: "screen" 
   }
 })
 

@@ -2,28 +2,34 @@ import React, { Component } from 'react'
 import { View, Text } from 'react-native'
 import { connect } from 'react-redux'
 
-import { NavigationActions } from 'react-navigation'
-
 import Mapbox, { MapView } from 'react-native-mapbox-gl'
 import { MAPBOX_ACCESS_TOKEN } from '../config/PublicAccessKeys'
 
+import GeolocationActionCreators from '../redux/GeolocationRedux'
+
+// TODO: move this to applications startup
+// Set mapbox access token
 Mapbox.setAccessToken(MAPBOX_ACCESS_TOKEN)
 
 class ExploreScreen extends Component {
   static navigationOptions = {
+    headerTintColor: 'black',
+    title: 'Explore',
     tabBarLabel: 'Explore',
-  };
-
-  constructorDidMount() {
+    // header: {
+    //  visible: false
+    // }
   }
 
   constructor(props) {
-    super(props);
+    super(props)
 
-    this.state = {
-      error: null,
-      map: null
-    };
+    this.props.startup()
+  }
+
+  state = {
+    error: null,
+    map: null
   }
 
   render() {
@@ -69,6 +75,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    startup: () => {
+      dispatch(GeolocationActionCreators.updateLocationRequest())
+    },
     onFabPress: (navigation) => {} //navigation.dispatch(NavigationActions.navigate('DropUploadScreen'))
   }
 }

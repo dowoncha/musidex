@@ -30,7 +30,8 @@
         </intent-filter>
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
-      <service android:name="com.mapbox.services.android.telemetry.service.TelemetryService"/>
+      <service android:name="com.mapbox.mapboxsdk.telemetry.TelemetryService" />
+      <!-- <service android:name="com.mapbox.services.android.telemetry.service.TelemetryService"/> -->
     </application>
 
 </manifest>

@@ -1,5 +1,5 @@
 import RNFirebase from 'react-native-firebase'
-const GeoFire = require('geofire')
+import GeoFire from 'geofire'
 
 const instance = RNFirebase.initializeApp({
   debug: __DEV__ ? '*' : false,
@@ -7,6 +7,6 @@ const instance = RNFirebase.initializeApp({
   persistence: true
 })
 
-const geoFire = new GeoFire()
+export const geoFire = new GeoFire(instance)
 
 export default instance

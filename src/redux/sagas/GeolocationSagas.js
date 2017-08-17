@@ -1,3 +1,7 @@
+import GeolocationCreators from '../GeolocationRedux'
+import { channel } from 'redux-saga'
+import { take, put } from 'redux-saga/effects'
+
 export const locationChannel = channel()
 
 export function * watchLocationChannel() {
@@ -7,8 +11,8 @@ export function * watchLocationChannel() {
   }
 }
 
-export function * getCurrentPosition(options) {
-  locationChannel.put(GeolocationCreators.updateLocationRequest());
+export function getCurrentPosition(options) {
+  // locationChannel.put(GeolocationCreators.updateLocationRequest());
 
   navigator.geolocation.getCurrentPosition(
     position => {
@@ -21,7 +25,7 @@ export function * getCurrentPosition(options) {
   );
 }
 
-function * watchCurrentPosition(options) {
+function watchCurrentPosition(options) {
   locationChannel.put(GeolocationCreators.updateLocationRequest());
 
   navigator.geolocation.watchPosition(

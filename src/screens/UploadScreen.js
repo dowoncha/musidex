@@ -2,22 +2,23 @@ import React, { Component } from 'react'
 import { View, Animated, ScrollView, Text, KeyboardAvoidingView } from 'react-native'
 import { connect } from 'react-redux'
 
-// import { NavigationActions } from 'react-navigation';
+import { Header, SearchBar, Icon } from 'react-native-elements'
 
-// import SearchBar from '../Components/SearchBar'
+class UploadScreen extends Component { 
+  static navigationOptions = ({ navigation }) => ({
+    title: 'Upload',
+    headerRight: <Icon name='send' raised />
+  })
 
-class UploadScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      track: null,
-      drop: {                            // Drop data
-        track: null
-      },
-      creating: false,                   // Fetch status
-      fadeAnim: new Animated.Value(0)    // For fade intro animation
-    }
+  state = {
+    track: null,
+    drop: {                            // Drop data
+      track: null
+    },
+    creating: false,                   // Fetch status
+    fadeAnim: new Animated.Value(0)    // For fade intro animation
   }
+
 
   componentDidMount() {
     Animated.timing(
@@ -32,7 +33,9 @@ class UploadScreen extends Component {
   render () {
     return (
       <View>
-        <Text>Upload</Text>
+        <SearchBar 
+          onChangeText={(text) => this.setState({track: text})}
+          placeholder="Search for Track" />
       </View>
     )
   }

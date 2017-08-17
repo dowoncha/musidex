@@ -1,35 +1,34 @@
 import { channel } from 'redux-saga'
-import { takeLatest, takeEvery, take, put, call, spawn } from 'redux-saga/effects'
+import { all, takeLatest, takeEvery, take, select, fork, put, call, spawn } from 'redux-saga/effects'
 // import API from '../Services/Api'
 // import FixtureAPI from '../Services/FixtureApi'
-import DebugConfig from '../Config/DebugConfig'
+import DebugConfig from '../../config/DebugConfig'
+
+import firebase from '../../firebase'
 
 /* ------------- Types ------------- */
 
-import { StartupTypes } from '../Redux/StartupRedux'
-import { AuthTypes } from '../Redux/AuthRedux'
-import { DropTypes } from '../Redux/DropsRedux'
-import GeolocationCreators, { GeolocationTypes } from '../Redux/GeolocationRedux';
+import AuthActionCreators, { AuthTypes } from '../AuthRedux'
+import GeolocationActionCreators, { GeolocationTypes } from '../GeolocationRedux'
 
 /* ------------- Sagas ------------- */
+import { loginFlow, signupFlow } from './AuthSagas'
+import { getCurrentPosition } from './GeolocationSagas'
 
-import { startup } from './StartupSagas'
-import { loginFlow } from './AuthSagas'
-import { watchDropsData, uploadDrop } from './DropSagas';
-// import { getUserAvatar } from './GithubSagas'
-
+/**
+ * Effects that need to be called on app startup
+ *
+ */
 function* startup(action) {
   console.log("Starting app sagas")
 
+  // Update user location
+  yield put(GeolocationActionCreators.updateLocationRequest())
+
   // Get user auth state
   try {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        // yield put()
-      } else {
-
-      }
-    });
+    const user = yield call(firebase.auth().onAuthStateChanged)
+    console.warn(user)
   } catch (error) {
     console.warn("Couldn't get user state")
   }
@@ -38,19 +37,46 @@ function* startup(action) {
   // Get user current location
 }
 
+function* watchAndLog() {
+  while (true) {
+    const action = yield take('*')
+    const state = yield select()
+
+    console.log("Action: ", action)
+    console.log("State after: ", state)
+  }
+}
+
+function* getCurrentUser() {
+  try {
+    const currentUser = yield call(firebase.auth().currentUser)
+
+    yield put(AuthActionCreators.setCurrentUser(currentUser))
+  } catch(error) {
+    console.log("Get current user: ", error)
+  }
+}
+
 export default function * root () {
-  yield [
+  yield all([
     // Startup
-    takeLatest(StartupTypes.STARTUP, startup),
+    takeLatest('APP_STARTUP', startup),
+
+    fork(watchAndLog),
 
     // Authentication Sagas
-    loginFlow(),
+    fork(loginFlow),
+    fork(signupFlow),
+
+    takeLatest(AuthTypes.GET_CURRENT_USER, getCurrentUser),
+
+    takeLatest(GeolocationTypes.UPDATE_LOCATION_REQUEST, getCurrentPosition), 
 
     // Geolocation sagas
-    spawn(watchLocationChannel),
+    // spawn(watchLocationChannel),
 
     // Entity sagas
 
     // takeLatest(DropTypes.CREATE_DROP_REQUEST, uploadDrop)
-  ]
+  ])
 }

@@ -24,7 +24,7 @@ export const INITIAL_STATE = Immutable({
 });
 
 /* ------------- Reducers ------------- */
-const drops = (state = { byId: {}, allIds: []}, action) {
+const drops = (state = { byId: {}, allIds: []}, action) => {
   switch (action.type) {
     case Types.CREATE_DROP:
       const { drop } = action.entities;

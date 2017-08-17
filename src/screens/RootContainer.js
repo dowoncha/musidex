@@ -25,6 +25,7 @@ class RootContainer extends Component {
     // }
 
     // ReactMapboxGl.setAccessToken(MAPBOX_ACCESS_KEY)
+    console.log("Root container");
   }
 
   render () {
