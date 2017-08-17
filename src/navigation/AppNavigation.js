@@ -51,11 +51,11 @@ const PrimaryNavigator = TabNavigator({
 
 // TODO: Drop upload screen should go in a separate navigator
 const AppNavigator = StackNavigator({
-  Home: { screen: PrimaryNavigator },
   Login: {
     path: '/login',
     screen: LoginScreen
   },
+  Home: { screen: PrimaryNavigator },
   // Signup: { screen: SignupScreen },
   // DropUploadScreen: { screen: DropUploadScreen }
 }, {

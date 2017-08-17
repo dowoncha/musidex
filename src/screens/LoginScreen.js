@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 // import { NavigationActions } from 'react-navigation'
 
 // --- Components
-import { Text, Button, FormLabel, FormInput, FormValidationMessage } from 'react-native-elements'
+import { colors, Text, Button, FormLabel, FormInput, FormValidationMessage } from 'react-native-elements'
 
 /**
  * Login screen
@@ -52,8 +52,13 @@ class LoginScreen extends Component {
         <Button
           large
           raised
+          backgroundColor={colors.primary2}
           title='Log In'
           onPress={() => handleLogin(this.state.email, this.state.password)} />
+        <Button
+          large
+          raised
+          title='Sign Up' />
       </View>
     );
   }
