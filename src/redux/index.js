@@ -6,6 +6,7 @@ import rootSaga from './sagas'
 // Reducers
 import { reducer as NavigationReducer } from './NavigationRedux'
 import { reducer as AuthReducer } from './AuthRedux'
+import { reducer as GeolocationReducer } from './GeolocationRedux'
 
 // Application state
 // Domain specific values - Array of objects
@@ -20,7 +21,7 @@ export default () => {
     // search: require('./SearchRedux').reducer,
     // drops: require('./DropsRedux').reducer,
     auth: AuthReducer,
-    // geolocation: require('./GeolocationRedux').reducer,
+    geolocation: GeolocationReducer,
     // util: require('./UtilityRedux').reducer,
     // subscriptions: subscriptionsReducer
   })

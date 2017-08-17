@@ -13,24 +13,23 @@ import GeolocationActionCreators, { GeolocationTypes } from '../GeolocationRedux
 
 /* ------------- Sagas ------------- */
 import { loginFlow, signupFlow } from './AuthSagas'
-import { getCurrentPosition } from './GeolocationSagas'
+import { watchLocationChannel, getCurrentPosition } from './GeolocationSagas'
 
 /**
  * Effects that need to be called on app startup
  *
  */
 function* startup(action) {
-  console.log("Starting app sagas")
-
   // Update user location
-  yield put(GeolocationActionCreators.updateLocationRequest())
+  // yield put(GeolocationActionCreators.updateLocationRequest())
+  yield call(getCurrentPosition)
 
   // Get user auth state
   try {
     const user = yield call(firebase.auth().onAuthStateChanged)
     console.warn(user)
   } catch (error) {
-    console.warn("Couldn't get user state")
+    console.warn("Couldn't get user state", error)
   }
 
 
@@ -62,6 +61,7 @@ export default function * root () {
     // Startup
     takeLatest('APP_STARTUP', startup),
 
+    // Debug logging
     fork(watchAndLog),
 
     // Authentication Sagas
@@ -70,10 +70,8 @@ export default function * root () {
 
     takeLatest(AuthTypes.GET_CURRENT_USER, getCurrentUser),
 
-    takeLatest(GeolocationTypes.UPDATE_LOCATION_REQUEST, getCurrentPosition), 
-
     // Geolocation sagas
-    // spawn(watchLocationChannel),
+    spawn(watchLocationChannel),
 
     // Entity sagas
 

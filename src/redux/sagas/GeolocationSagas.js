@@ -11,15 +11,17 @@ export function * watchLocationChannel() {
   }
 }
 
-export function getCurrentPosition(options) {
-  // locationChannel.put(GeolocationCreators.updateLocationRequest());
+export function * getCurrentPosition(options) {
+  locationChannel.put(GeolocationCreators.updateLocationRequest());
 
   navigator.geolocation.getCurrentPosition(
     position => {
+      console.log("loc suc", position)
       locationChannel.put(GeolocationCreators.updateLocationSuccess(position));
     },
     (error) => {
-      locationChannel.put(GeolocationCreators.updateLocationFailure(error));
+      console.warn('loc error', error)
+      // locationChannel.put(GeolocationCreators.updateLocationFailure(error));
     },
     options
   );

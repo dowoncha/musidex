@@ -7,6 +7,7 @@ android/app/google-services.json
 *.apk
 *.class
 *.dex
+*.swp
 
 # Gradle files
 android/app/build
