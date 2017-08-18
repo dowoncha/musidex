@@ -19,7 +19,6 @@ const INITIAL_STATE = Immutable({
       latitude: 0.0
     }
   },
-  location: null,
   updating: false,
   error: null
 });
@@ -36,12 +35,7 @@ const updateLocationSuccess = (state, action) => {
 
   return state.merge({
     updating: false,
-    position: {
-      coords: { 
-        longitude: location.coords.longitude,
-        latitude: location.coords.latitude
-      }
-    }
+    position: location
   }, { deep: true });
 }
 

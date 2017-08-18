@@ -5,10 +5,12 @@ import { connect } from 'react-redux'
 import { Header, SearchBar, Icon } from 'react-native-elements'
 
 class UploadScreen extends Component { 
-  static navigationOptions = ({ navigation }) => ({
-    title: 'Upload',
-    headerRight: <Icon name='send' raised />
-  })
+  static navigationOptions = ({ navigation }) => {
+    'Upload'
+    // header: ({ state }) => ({
+    //   right: <Icon name='send' onPress={() => state.params.handleSend} />
+    // })
+  }
 
   state = {
     track: null,
@@ -28,6 +30,12 @@ class UploadScreen extends Component {
         duration: 1000
       }
     ).start();
+
+    this.props.navigation.setParams({ handleSend: this.handleSend })
+  }
+
+  handleSend() {
+    alert('Drop track')
   }
 
   render () {
@@ -49,6 +57,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    handleUpload: () => { console.log("Upload") }
     // onCreateDrop: (drop) => dispatch(DropCreators.createDropRequest(drop)),
   }
 }

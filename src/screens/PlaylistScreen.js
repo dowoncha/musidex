@@ -3,14 +3,15 @@ import { View, ScrollView, ListView, Text } from 'react-native'
 import { connect } from 'react-redux'
 
 // Components
-import { Header, List, ListItem } from 'react-native-elements'
+import { Header, List, ListItem, Button} from 'react-native-elements'
 
 import dropsData from '../fixtures/drops_mock_data'
 
 class PlaylistScreen extends Component {
-  // static navigationOptions = {
-  //   title: 'Playlist'
-  // }
+  static navigationOptions = {
+    title: 'Playlist',
+    headerRight: <Button icon={{name: 'sort' }} raised />
+  }
 
   state = {
     dataSource: dropsData
@@ -52,13 +53,9 @@ class PlaylistScreen extends Component {
 
   render () {
     return (
-      <View>
-        <Header
-          statusBarProps={{ barStyle: 'light-content' }}
-          centerComponent={{ text: 'Playlist', style: { color: '#fff' }}}
-          rightComponent={{ icon: 'sort', color: '#fff' }} />
+      <View> 
         <ScrollView>
-          <List>
+          <List style={{ marginTop: 0}}>
             {this.state.dataSource.slice(0, 30)
                 .map((el, i) => this.renderRow(el))
             }

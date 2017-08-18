@@ -33,20 +33,27 @@ class ExploreScreen extends Component {
   }
 
   render() {
+    const { position } = this.props;
+
+    const initialPosition = {
+      latitude: position.coords.latitude,
+      longitude: position.coords.longitude
+    };
+
     return (
       <View style={{
         flex: 1,
         alignItems: 'stretch'
       }}>
         <MapView
-          initialCenterCoordinate={{
-            latitude: 40.72052634,
-            longitude: -73.97686958312988
-          }}
           initialZoomLevel={11}
+          showsUserLocation
+          userTrackingMode={Mapbox.userTrackingMode.followWithCourse}
           style={{
             flex: 1
           }}
+          userLocationVerticalAlignment={Mapbox.userLocationVerticalAlignment.center}
+          logoIsHidden
           styleURL={Mapbox.mapStyles.dark}/>
       </View>
     );
@@ -55,21 +62,9 @@ class ExploreScreen extends Component {
 
 const mapStateToProps = (state) => {
   const { geolocation } = state
-  const position = {
-    coords: {
-      longitude: 0,
-      latitude: 0
-    }
-  };
 
   return {
-    position,
-    region: {
-      longitude: position.coords.longitude,
-      latitude: position.coords.latitude,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421
-    }
+    position: geolocation.position,
   }
 }
 

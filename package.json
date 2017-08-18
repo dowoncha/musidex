@@ -12,7 +12,8 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "test": "node node_modules/jest/bin/jest.js --watch",
-    "lint": "eslint --color src/*" 
+    "lint": "eslint --color src/*",
+    "logcat": "adb logcat | grep -F `adb shell ps | grep com.musidex | cut -c10-15`"
   },
   "jest": {
     "preset": "react-native"
