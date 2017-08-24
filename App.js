@@ -5,14 +5,46 @@ import createStore from './src/redux'
 
 import { RootContainer } from './src/screens'
 
-export default class App extends Component {
-  store = createStore();
+XMLHttpRequest = GLOBAL.originalXMLHttpRequest ?
+  GLOBAL.originalXMLHttpRequest : 
+  GLOBAL.XMLHttpRequest;
 
-  render() {
-    return (
-      <Provider store={this.store}>
-        <RootContainer />
-      </Provider>
-    );
-  }
+global._fetch = fetch;
+global.fetch = (uri, options, ...args) => {
+  return global._fetch(uri, options, ...args).then((res) => {
+    console.log('Fetch', {request: { uri, options, ...args}, res });
+    return res;
+  });
 }
+
+function bootstrap() {
+
+  if (!__DEV__) {
+    console.log = () => {
+    }
+    
+    console.warn = () => {
+    }
+
+    console.error = () => {
+    }
+
+    console.disableYellowBox = true
+  }
+
+  class App extends Component {
+    store = createStore();
+
+    render() {
+      return (
+        <Provider store={this.store}>
+          <RootContainer />
+        </Provider>
+      );
+    }
+  }
+
+  return App
+}
+
+export default bootstrap()

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text } from 'react-native'
+import { StatusBar, View, Text } from 'react-native'
 import { connect } from 'react-redux'
 
 import Mapbox, { MapView } from 'react-native-mapbox-gl'

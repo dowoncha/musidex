@@ -21,12 +21,14 @@ function * firebaseLocalLogin({email, password}) {
   // Attempt to login user to firebase using email, password
   try {
     // Async call to firebase local authorization
-    yield call(
+    const user = yield call(
       firebase.auth().signInWithEmailAndPassword,
-        email, password);
+        email, password)
+
+    yield put(AuthActionCreators.loginSuccess(user))
 
   } catch(error) {
-    yield put(AuthActionCreators.loginFailure(error));
+    yield put(AuthActionCreators.loginFailure(error))
   }
 }
 
@@ -34,21 +36,6 @@ function * firebaseLocalLogin({email, password}) {
 /**
  * Sign up user through Firebase
  */
-function * firebaseSignup(email, password) {
-  try {
-    // Create user account
-    yield call(
-      firebase.auth().createUserWithEmailAndPassword,
-        this.state.email, this.state.password);
-
-    // yield put(AuthTypes.loginSuc)
-    // Handle errors
-  } catch (error) {
-    // TODO: change to signin failure
-    yield put(AuthTypes.LoginFailure(error))
-  }
-}
-
 function * firebaseLogout() {
   try {
     yield call(firebase.auth().signOut)
@@ -89,9 +76,8 @@ export function * loginFlow() {
 
     // If local login finishes without interruption
     if (auth) {
-      console.warn("auth");
       // If there was an error
-      yield put(AuthActionCreators.loginRequestSuccess())
+      // yield put(AuthActionCreators.loginRequestSuccess())
       // TODO: Need navigation actions
       // Forward user to /home
     }

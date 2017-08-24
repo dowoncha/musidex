@@ -13,8 +13,7 @@ class SignupScreen extends Component {
 
   state = {
     email: '',
-    password: '',
-    error: null
+    password: ''
   }
 
   render() {
@@ -25,15 +24,17 @@ class SignupScreen extends Component {
         flex: 1,
         justifyContent: 'center',
       }}>
-        <Text h1>Sign up</Text>
+        <View style={{ alignItems: 'center' }}>
+          <Text h1>Sign Up</Text>
+        </View>
         <View>
           <FormLabel>Email</FormLabel>
           <FormInput
             onChangeText={(text) => this.setState({ email: text })}
             value={this.state.email} />
-          {this.state.error && this.state.error.message &&  
+          {this.props.error && this.props.error.message &&  
             <FormValidationMessage>
-              {this.state.error.message}
+              {this.props.error.message}
             </FormValidationMessage>
           }
         </View>
@@ -59,7 +60,7 @@ class SignupScreen extends Component {
 
 const mapStateToProps = (state) => {
   return {
-
+    error: state.auth.error
   }
 }
 

@@ -5,7 +5,11 @@ import {
   LoginScreen, SignupScreen, ExploreScreen,
   PlaylistScreen, ProfileScreen, UploadScreen } from '../screens'
 
+import Navbar from '../components/Navbar'
+
 import { Icon, /* Tabs, Tab*/ } from 'react-native-elements'
+
+import AppColors from '../styles/colors'
 
 // Manifest of possible screens
 const PrimaryNavigator = TabNavigator({
@@ -53,16 +57,21 @@ const PrimaryNavigator = TabNavigator({
 
 // TODO: Drop upload screen should go in a separate navigator
 const AppNavigator = StackNavigator({
+  // Login: { screen: LoginScreen },
   Home: { screen: PrimaryNavigator },
   Login: { screen: LoginScreen },
   Signup: { screen: SignupScreen } 
 }, {
-  navigationOptions: {
+  navigationOptions: ({ screenProps }) => ({
+    headerStyle: {
+      backgroundColor: AppColors.primaryDark
+    },
+    // header: (props) => <Navbar {...props} />,
     // initialRouteName: 'Launch'
     // TODO: prevent header from showing on home screen
     // TODO: set initial screen to launch screen
     headerMode: "screen" 
-  }
+  })
 })
 
 export default AppNavigator

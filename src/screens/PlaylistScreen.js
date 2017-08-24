@@ -4,13 +4,16 @@ import { connect } from 'react-redux'
 
 // Components
 import { Header, List, ListItem, Button} from 'react-native-elements'
+import ActionButton from 'react-native-action-button'
 
 import dropsData from '../fixtures/drops_mock_data'
+
+import AppColors from '../styles/colors'
 
 class PlaylistScreen extends Component {
   static navigationOptions = {
     title: 'Playlist',
-    headerRight: <Button icon={{name: 'sort' }} raised />
+    headerRight: <Button icon={{name: 'sort' }} backgroundColor={'rgba(0,0,0,0)'}/>
   }
 
   state = {
@@ -61,6 +64,8 @@ class PlaylistScreen extends Component {
             }
           </List>
         </ScrollView>
+        <ActionButton buttonColor={AppColors.secondary}>
+        </ActionButton>
       </View>
     )
   }

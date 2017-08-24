@@ -11,7 +11,8 @@ const { Types, Creators } = createActions({
   signup: ['data'],
   getCurrentUser: [],
   setCurrentUser: ['user'],
-  spotifyAuthorize: []
+  spotifyAuthorize: [],
+  createUserSuccess: ['user'],
 })
 
 export const AuthTypes = Types
@@ -47,6 +48,8 @@ const loginSuccess = (state, action) => {
 const loginFailure = (state, action) => {
   const { error } = action;
 
+  console.log(error)
+
   return state.merge({ fetching: false, isLoggedIn: false, error})
 }
 
@@ -64,11 +67,23 @@ const setCurrentUser = (state, action) => {
   return state.merge({ user })
 }
 
+const createUserSuccess = (state, action) => {
+  const { user } = action
+
+  return state.merge({ 
+    user, 
+    uid: user.uid, 
+    isLoggedIn: true, 
+    fetching: false, 
+    error: null 
+  })
+}
+
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.LOGIN_REQUEST]: loginRequest,
   [Types.LOGIN_SUCCESS]: loginSuccess,
   [Types.LOGIN_FAILURE]: loginFailure,
   [Types.SET_CURRENT_USER]: setCurrentUser,
   [Types.LOGOUT]: logout,
-  // [Types.SPOTIFY_AUTHORIZE]: spotifyAuthorize
+  [Types.CREATE_USER_SUCCESS]: createUserSuccess
 });

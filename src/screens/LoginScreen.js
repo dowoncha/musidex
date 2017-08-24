@@ -7,19 +7,42 @@ import { connect } from 'react-redux'
 import { NavigationActions } from 'react-navigation'
 import AuthActionCreators from '../redux/AuthRedux'
 
+import db from '../firebase'
+
 // --- Components
 import { colors, Text, Button, FormLabel, FormInput, FormValidationMessage } from 'react-native-elements'
+
+import AppColors from '../styles/colors'
 
 /**
  * Login screen
  * Display if user is not authenticated (logged out)
  */
-class LoginScreen extends Component {
+export class LoginScreen extends Component {
+  static navigationOptions = {
+    header: null
+  }
+
   state = {
     loading: false,
     email: '',
-    password: '',
-    error: null
+    password: ''
+  }
+
+  componentDidMount() {
+    this.unsuscribe = db.auth().onAuthStateChanged((user) => {
+      if (user) {
+        console.log("User: ", user)
+      } else {
+        console.log("No user")
+      }
+    })
+  }
+
+  componentWillUnmount() {
+    if (this.unsubscribe) {
+      this.unsubscribe()
+    }
   }
 
   render () {
@@ -29,49 +52,64 @@ class LoginScreen extends Component {
       <View style={{
         flex: 1,
         justifyContent: 'center',
+        backgroundColor: AppColors.primary
       }}>
         <View style={{
           alignItems: 'center'
         }}>
-          <Text h1>Musidex</Text>
+          <Text h1 style={{ color: 'black' }}>Musidex</Text>
         </View>
         <View>
-          <FormLabel>Username or Email</FormLabel>
+          <FormLabel labelStyle={{ color: 'black' }}>Username or Email</FormLabel>
           <FormInput
             onChangeText={(text) => this.setState({ email: text })}
             value={this.state.email} />
-          {this.state.error && this.state.error.message &&  
+          {this.props.error && this.props.error.message &&  
             <FormValidationMessage>
-              {this.state.error.message}
+              {this.props.error.message}
             </FormValidationMessage>
           }
         </View>
         <View>
-          <FormLabel>Password</FormLabel>
+          <FormLabel labelStyle={{ color: 'black' }}>Password</FormLabel>
           <FormInput
             onChangeText={(text) => this.setState({ password: text })}
             value={this.state.password}
             secureTextEntry={true} />
         </View>
+        <View style={{
+        }}>
         <Button
           large
           raised
-          backgroundColor={colors.primary2}
+          backgroundColor={AppColors.primaryLight}
           title='Log In'
           onPress={() => handleLogin(this.state.email, this.state.password)} />
         <Button
           large
           raised
-          title='Sign Up' 
+          title='Sign Up'
+          backgroundColor={AppColors.secondaryLight}
           onPress={() => this.props.navigation.navigate('Signup')} />
+        </View>
       </View>
     );
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   return {
-    // loading: state.user
+    error: state.auth.error,
+    getScreenDetails: (scene) => {
+      const details = ownProps.getScreenDetails(scene);
+      return {
+        ...details,
+        options: {
+          headerStyle: { color: '#f00' },
+          ...details.options
+        }
+      }
+    }
   }
 }
 

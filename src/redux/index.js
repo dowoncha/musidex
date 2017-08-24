@@ -7,6 +7,7 @@ import rootSaga from './sagas'
 import { reducer as NavigationReducer } from './NavigationRedux'
 import { reducer as AuthReducer } from './AuthRedux'
 import { reducer as GeolocationReducer } from './GeolocationRedux'
+import { reducer as EntitiesReducer } from './EntitiesRedux'
 
 // Application state
 // Domain specific values - Array of objects
@@ -16,10 +17,7 @@ export default () => {
   /* ------------- Assemble The Reducers ------------- */
   const rootReducer = combineReducers({
     nav: NavigationReducer,
-    // entities: (state = { filter: null}, action) => state
-    // entities: require('./EntitiesRedux').reducer,
-    // search: require('./SearchRedux').reducer,
-    // drops: require('./DropsRedux').reducer,
+    entities: EntitiesReducer,
     auth: AuthReducer,
     geolocation: GeolocationReducer,
     // util: require('./UtilityRedux').reducer,
